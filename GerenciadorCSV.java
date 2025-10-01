@@ -55,11 +55,13 @@ public class GerenciadorCSV {
     public List<Medico> carregarMedicos() {
         List<String> linhas = lerArquivo(MEDICO_CSV);
         if (linhas.isEmpty()) return new ArrayList<>();
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
 
         return linhas.stream().skip(1)
                 .map(linha -> {
                     String[] campos = linha.split(",");
-                    return new Medico(campos[1], campos[0], campos[2].toString() , campos[3], Especialidade.valueOf(campos[4]));
+                    return new Medico(campos[1], campos[0], LocalDate.parse(campos[2], formatter) , campos[3], Especialidade.valueOf(campos[4]));
                 })
                 .collect(Collectors.toList());
     }
